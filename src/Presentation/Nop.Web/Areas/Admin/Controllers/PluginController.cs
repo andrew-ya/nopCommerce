@@ -188,7 +188,9 @@ namespace Nop.Web.Areas.Admin.Controllers
                 _notificationService.SuccessNotification(message);
 
                 //restart application
-                _webHelper.RestartApplication();
+                _webHelper.RestartAppDomain();
+
+                return View("RestartApplication", Url.Action("List", "Plugin"));
             }
             catch (Exception exc)
             {
@@ -303,18 +305,27 @@ namespace Nop.Web.Areas.Admin.Controllers
             return RedirectToAction("List");
         }
 
+        [HttpPost, ActionName("List")]
+        [FormValueRequired("plugin-reload-grid")]
         public virtual IActionResult ReloadList()
         {
             if (!_permissionService.Authorize(StandardPermissionProvider.ManagePlugins))
-                return Json(new { url = Url.Action("AccessDenied", "Security", new { pageUrl = _webHelper.GetRawUrl(Request) }) });
+                return AccessDeniedView();
 
             _pluginService.UninstallPlugins();
             _pluginService.DeletePlugins();
 
             //restart application
-            _webHelper.RestartApplication();
+            _webHelper.RestartAppDomain();
 
-            return Json(new { url = Url.Action("List", "Plugin") });
+            return View("RestartApplication", Url.Action("List", "Plugin"));
+        }
+
+        [HttpPost, ActionName("List")]
+        [FormValueRequired("plugin-apply-changes")]
+        public virtual IActionResult ApplyChanges()
+        {
+            return ReloadList();
         }
 
         [HttpPost, ActionName("List")]

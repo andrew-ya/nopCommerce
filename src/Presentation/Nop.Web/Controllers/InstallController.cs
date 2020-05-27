@@ -60,12 +60,11 @@ namespace Nop.Web.Controllers
                 ConnectionStringRaw = false,
                 DataProvider = DataProviderType.SqlServer
             };
-
+            
             model.AvailableDataProviders.AddRange(
                 _locService.GetAvailableProviderTypes()
                 .OrderBy(v => v.Value)
-                .Select(pt => new SelectListItem
-                {
+                .Select(pt => new SelectListItem { 
                     Value = pt.Key.ToString(),
                     Text = pt.Value
                 }));
@@ -104,8 +103,7 @@ namespace Nop.Web.Controllers
             model.AvailableDataProviders.AddRange(
                 _locService.GetAvailableProviderTypes()
                     .OrderBy(v => v.Value)
-                    .Select(pt => new SelectListItem
-                    {
+                    .Select(pt => new SelectListItem { 
                         Value = pt.Key.ToString(),
                         Text = pt.Value
                     }));
@@ -222,7 +220,7 @@ namespace Nop.Web.Controllers
                 catch { }
 
                 //restart application
-                webHelper.RestartApplication();
+                webHelper.RestartAppDomain();
 
                 //Redirect to home page
                 return RedirectToRoute("Homepage");
@@ -256,15 +254,19 @@ namespace Nop.Web.Controllers
             return RedirectToAction("Index", "Install");
         }
 
+        [HttpPost]
+        [IgnoreAntiforgeryToken]
         public virtual IActionResult RestartInstall()
         {
             if (DataSettingsManager.DatabaseIsInstalled)
-                return Json(new { url = Url.RouteUrl("Homepage") });
+                return RedirectToRoute("Homepage");
 
             //restart application
-            EngineContext.Current.Resolve<IWebHelper>().RestartApplication();
+            var webHelper = EngineContext.Current.Resolve<IWebHelper>();
+            webHelper.RestartAppDomain();
 
-            return Json(new { url = Url.Action("Index", "Install") });
+            //Redirect to home page
+            return RedirectToRoute("Homepage");
         }
 
         #endregion

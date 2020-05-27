@@ -6127,8 +6127,7 @@ namespace Nop.Services.Installation
                 EnableHtmlMinification = true,
                 //we disable bundling out of the box because it requires a lot of server resources
                 EnableJsBundling = false,
-                EnableCssBundling = false,
-                RestartTimeout = NopCommonDefaults.RestartTimeout
+                EnableCssBundling = false
             });
 
             settingService.SaveSetting(new SeoSettings

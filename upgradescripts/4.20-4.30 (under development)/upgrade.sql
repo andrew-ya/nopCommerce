@@ -3300,11 +3300,3 @@ BEGIN
     VALUES (N'avalarataxsettings.enablelogging', N'True', 0)
 END
 GO
-
---new setting
-IF NOT EXISTS (SELECT 1 FROM [Setting] WHERE [Name] = N'commonsettings.restarttimeout')
-BEGIN
-    INSERT [Setting] ([Name], [Value], [StoreId])
-    VALUES (N'commonsettings.restarttimeout', N'3000', 0)
-END
-GO

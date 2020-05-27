@@ -81,9 +81,9 @@ namespace Nop.Core
         T QueryString<T>(string name);
 
         /// <summary>
-        /// Restart application
+        /// Restart application domain
         /// </summary>
-        void RestartApplication();
+        void RestartAppDomain();
         
         /// <summary>
         /// Gets a value that indicates whether the client is being redirected to a new location
