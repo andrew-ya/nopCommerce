@@ -352,9 +352,6 @@ namespace Nop.Web.Areas.Admin.Controllers
             if (!_permissionService.Authorize(StandardPermissionProvider.ManageMaintenance))
                 return AccessDeniedView();
 
-            //restart application
-            _webHelper.RestartAppDomain();
-
             //home page
             if (string.IsNullOrEmpty(returnUrl))
                 returnUrl = Url.Action("Index", "Home", new { area = AreaNames.Admin });
@@ -364,6 +361,15 @@ namespace Nop.Web.Areas.Admin.Controllers
                 returnUrl = Url.Action("Index", "Home", new { area = AreaNames.Admin });
 
             return View("RestartApplication", returnUrl);
+        }
+
+        [HttpPost]
+        public virtual IActionResult RestartAppDomain()
+        {
+            //restart application
+            _webHelper.RestartAppDomain();
+
+            return Content(string.Empty);
         }
 
         public virtual IActionResult SeNames()
