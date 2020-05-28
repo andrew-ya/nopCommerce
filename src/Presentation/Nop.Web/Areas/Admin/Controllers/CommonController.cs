@@ -363,13 +363,12 @@ namespace Nop.Web.Areas.Admin.Controllers
             return View("RestartApplication", returnUrl);
         }
 
-        [HttpPost]
-        public virtual IActionResult RestartAppDomain()
+        public virtual IActionResult RestartApplication()
         {
             //restart application
             _webHelper.RestartAppDomain();
 
-            return Content(string.Empty);
+            return new EmptyResult();
         }
 
         public virtual IActionResult SeNames()

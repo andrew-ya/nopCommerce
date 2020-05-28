@@ -1,22 +1,18 @@
 ﻿@model string
 
-<script type="text/javascript">
+@using Nop.Services.Common
+@inject CommonSettings commonSettings
 
-    showThrobber('@Html.Raw(JavaScriptEncoder.Default.Encode(T("Admin.Header.RestartApplication.Progress").Text))');
-
-
+<script>
     $(document).ready(function () {
-        var postData = {};
-        addAntiForgeryToken(postData);
-
+        showThrobber('@Html.Raw(JavaScriptEncoder.Default.Encode(T("Admin.Header.RestartApplication.Progress").Text))');
         $.ajax({
-            type: "POST",
-            data: postData,
-            url: "@Url.Action("RestartAppDomain", "Common")",
+            type: "GET",
+            url: "@Url.Action("RestartApplication", "Common")",
             success: function() {
                 window.setTimeout(function () {
-                    window.location.href = '@Model';
-                }, 3000);
+                    window.location.href = '@(!string.IsNullOrEmpty(Model) ? Model : Url.Action("Index", "Home", new { area = AreaNames.Admin }))';
+                }, @(commonSettings.RestartTimeout ?? NopCommonDefaults.RestartTimeout));
             }
         });
     });

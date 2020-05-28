@@ -187,9 +187,6 @@ namespace Nop.Web.Areas.Admin.Controllers
                 var message = string.Format(_localizationService.GetResource("Admin.Configuration.Plugins.Uploaded"), pluginDescriptors.Count, themeDescriptors.Count);
                 _notificationService.SuccessNotification(message);
 
-                //restart application
-                _webHelper.RestartAppDomain();
-
                 return View("RestartApplication", Url.Action("List", "Plugin"));
             }
             catch (Exception exc)
@@ -314,9 +311,6 @@ namespace Nop.Web.Areas.Admin.Controllers
 
             _pluginService.UninstallPlugins();
             _pluginService.DeletePlugins();
-
-            //restart application
-            _webHelper.RestartAppDomain();
 
             return View("RestartApplication", Url.Action("List", "Plugin"));
         }
